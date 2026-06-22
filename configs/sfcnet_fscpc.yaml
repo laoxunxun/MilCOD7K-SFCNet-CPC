@@ -1,0 +1,23 @@
+# FS-CPC variant — dual high/low-frequency prototype banks + frequency gate.
+# models/NetFS_CPC.py.  Expected: 84.24 mIoU (τ=0.07).
+model:
+  name: NetFS_CPC
+  encoder: smt_t
+  encoder_channels: [64, 128, 256, 512]
+  num_classes: 5
+  proto_dim: 64
+  init_encoder: checkpoints/smt_tiny_imagenet1k.pth
+
+fscpc:
+  enabled: true
+  hf_temperature: 0.07
+  lf_temperature: 0.07
+  align_weight: 0.3             # cross-frequency alignment loss
+  gate_diversity: true
+  loss_weight: 0.1
+
+data: {root: data/MilCOD7K, train_size: 384, num_workers: 8,
+       augmentation: {hflip: true, rotation: true, color_jitter: [0.2, 0.2, 0.2]}}
+loss: {ce_class_weighted: true, tversky: {alpha: 0.7, beta: 0.3}, focal: true, deep_supervision: true}
+train: {epochs: 200, batch_size: 12, optimizer: adam, lr: 5.0e-5, weight_decay: 1.0e-4,
+        scheduler: reducelronplateau, early_stop: {patience: 20, monitor: val_miou}}

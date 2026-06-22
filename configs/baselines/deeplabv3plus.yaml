@@ -1,0 +1,15 @@
+# Baseline: DeepLabV3+ (ResNet-50).  Same CE+Tversky+Focal protocol as our model.
+# Highest-scoring general-segmentation baseline: 79.54 mIoU / 88.36 mF1.
+# Train with: python train.py --config configs/baselines/deeplabv3plus.yaml --arch deeplabv3plus
+model:
+  name: deeplabv3plus
+  backbone: resnet50
+  num_classes: 5
+
+data: {root: data/MilCOD7K, train_size: 384, num_workers: 8,
+       augmentation: {hflip: true, rotation: true, color_jitter: [0.2, 0.2, 0.2]}}
+loss: {ce_class_weighted: true, tversky: {alpha: 0.7, beta: 0.3}, focal: true, deep_supervision: false}
+train: {epochs: 200, batch_size: 12, optimizer: adam, lr: 5.0e-5, weight_decay: 1.0e-4,
+        scheduler: reducelronplateau, early_stop: {patience: 20, monitor: val_miou}}
+# Equivalent configs exist for: unet, pspnet, fpn, pan (general segmentation)
+# and the COD baselines: fpnet, sinetv2, zoomnext (retrained with the same loss).

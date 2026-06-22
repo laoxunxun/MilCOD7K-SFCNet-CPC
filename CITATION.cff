@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this code or the MilCOD7K dataset, please cite this repository."
+title: "MilCOD7K-SFCNet-CPC: Multi-Class Camouflaged Military Object Segmentation"
+abstract: >-
+  A PyTorch project for multi-class camouflaged military object segmentation,
+  built on the SFCNet backbone with a Category Prototype Contrast (CPC) module,
+  together with the MilCOD7K benchmark (7,200 pixel-level annotated images).
+type: software
+authors:
+  - family-names: "TODO"
+    given-names: "TODO"
+    # add all contributors before release
+keywords:
+  - camouflaged object detection
+  - multi-class semantic segmentation
+  - spatial-frequency collaborative network
+  - category prototype contrast
+  - contrastive learning
+  - military object detection
+license: MIT
+repository-code: "https://github.com/laoxunxun/MilCOD7K-SFCNet-CPC"
+version: "1.0.0"
+date-released: "2026-06-19"

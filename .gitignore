@@ -1,0 +1,49 @@
+# ---- Data (too large for git — released separately) ----
+data/*
+!data/README.md
+!sample/
+
+# ---- Checkpoints / logs / outputs ----
+checkpoints/*
+!checkpoints/README.md
+*.pth
+*.pt
+*.ckpt
+runs/
+results/
+logs/
+*.log
+
+# ---- Large experiment artefacts ----
+*.npy            # GT masks live in the dataset release, not in git
+cpts_*/
+eval_results/
+evaluation_results_*/
+inference_results*/
+*.mp4
+
+# ---- Build output (dataset/weights zips go to Baidu Netdisk, not git) ----
+release/
+*.zip
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# ---- IDE / OS ----
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+
+# ---- Misc ----
+nul

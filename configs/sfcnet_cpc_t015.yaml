@@ -1,0 +1,43 @@
+# SFCNet-CPC — recommended configuration (SFCNet-F2, τ = 0.15, highest measured mIoU)
+# This is the headline model: 84.93% mIoU / 91.71% mF1 on MilCOD7K test.
+model:
+  name: NetMultiClass            # SFCNet + CPC  (models/NetMultiClass.py)
+  encoder: smt_t                 # SMT-Tiny, ImageNet-1K pretrained
+  encoder_channels: [64, 128, 256, 512]
+  num_classes: 5                 # background + 4 foreground
+  proto_dim: 64
+  init_encoder: checkpoints/smt_tiny_imagenet1k.pth
+
+cpc:                             # Category Prototype Contrast
+  enabled: true
+  temperature: 0.15              # τ — HIGHER is better here (label-smoothing effect)
+  loss_weight: 0.1               # λ
+  use_refinement: true
+
+data:
+  root: data/MilCOD7K
+  splits: [train, val, test]
+  train_size: 384
+  num_workers: 8
+  augmentation:
+    hflip: true
+    rotation: true
+    color_jitter: [0.2, 0.2, 0.2]   # brightness, contrast, saturation
+
+loss:
+  ce_class_weighted: true        # counter 88.45% background imbalance
+  tversky: {alpha: 0.7, beta: 0.3}
+  focal: true
+  deep_supervision: true
+
+train:
+  epochs: 200
+  batch_size: 12
+  optimizer: adam
+  lr: 5.0e-5
+  weight_decay: 1.0e-4
+  scheduler: reducelronplateau   # factor 0.5, patience 20
+  early_stop: {patience: 20, monitor: val_miou}
+
+eval:
+  metric: [mIoU, mF1]

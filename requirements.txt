@@ -1,0 +1,25 @@
+# MilCOD7K · SFCNet-CPC — Python dependencies
+# Tested with Python 3.10 / PyTorch 2.x on a single NVIDIA RTX 3090 (24GB).
+
+# core deep learning
+torch>=1.12
+torchvision>=0.13
+
+# tensors / image I/O
+numpy>=1.23
+opencv-python>=4.7
+Pillow>=9.3
+
+# transformers-style ops used by SMT-Tiny backbone
+einops>=0.6
+
+# training utilities
+tqdm>=4.64
+PyYAML>=6.0
+matplotlib>=3.6
+scipy>=1.9
+pandas>=1.5
+scikit-learn>=1.1   # t-SNE visualisation
+
+# complexity measurement (Params / FLOPs reporting)
+thop>=0.1

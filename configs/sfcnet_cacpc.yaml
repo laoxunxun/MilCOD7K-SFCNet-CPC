@@ -1,0 +1,27 @@
+# CA-CPC variant — confusion-aware (EMA confusion matrix + boundary-adaptive
+# temperature + prototype separation loss).  models/NetCC_CPC.py.
+# Real code values: confusion_momentum 0.9, boundary_sharpness 0.5, base_temp 0.07,
+# boundary_temp 0.035, separation_margin 0.3.  Expected: 80.61 mIoU.
+# NOTE: the separation loss stays inactive (margin 0.3 < min prototype distance ~0.78);
+# CA-CPC underperforms standard CPC under our 5-class setting — exploratory variant.
+model:
+  name: NetCC_CPC
+  encoder: smt_t
+  encoder_channels: [64, 128, 256, 512]
+  num_classes: 5
+  proto_dim: 64
+  init_encoder: checkpoints/smt_tiny_imagenet1k.pth
+
+cacpc:
+  enabled: true
+  base_temperature: 0.07
+  boundary_sharpness: 0.5       # boundary_temp = base_temp * boundary_sharpness = 0.035
+  confusion_momentum: 0.9       # EMA decay
+  separation_margin: 0.3
+  loss_weight: 0.1
+
+data: {root: data/MilCOD7K, train_size: 384, num_workers: 8,
+       augmentation: {hflip: true, rotation: true, color_jitter: [0.2, 0.2, 0.2]}}
+loss: {ce_class_weighted: true, tversky: {alpha: 0.7, beta: 0.3}, focal: true, deep_supervision: true}
+train: {epochs: 200, batch_size: 12, optimizer: adam, lr: 5.0e-5, weight_decay: 1.0e-4,
+        scheduler: reducelronplateau, early_stop: {patience: 20, monitor: val_miou}}
