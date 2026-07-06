@@ -8,6 +8,8 @@ A large-scale benchmark for **multi-class military camouflage object detection/s
 - **Splits (8:1:1):** train 5,760 · val 720 · test 720
 - Terrains: woodland, desert, urban, mixed; scenes: day/night/snow, etc.
 
+> 📄 **Full datasheet** (data sources, real/AI split rule, annotation protocol, class definitions, deduplication, license & ethics) is in [`DATASET.md`](../DATASET.md). A per-image label file `metadata.csv` (columns: `filename, split, class, class_id, source` ∈ {real, ai}) ships with the dataset archive.
+
 ## 1. Download
 
 The dataset is too large for git and is distributed via **Baidu Netdisk** (百度网盘),

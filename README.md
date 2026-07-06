@@ -25,10 +25,15 @@ A PyTorch project for multi-class camouflaged military object segmentation. It b
 | FPNet (COD) | 62.90 | 75.48 | 75.60 |
 | ZoomNeXt (COD) | 59.37 | 73.06 | 28.50 |
 | SINet-V2 (COD) | 22.29 | 26.24 | 27.00 |
+| SAM2-DEGNet (COD, 5-class adapted †) | 83.21 | 90.65 | 11.80 trainable / 224 total |
 | SFCNet (backbone, no CPC) | 80.76 | 89.08 | 23.32 |
 | **SFCNet-CPC (τ=0.15, Ours)** | **84.93** | **91.71** | **23.32** |
 
-Full per-class breakdown, ablations, binary COD metrics, and cross-dataset (MHCD2022) results are in [`docs/reproduce.md`](docs/reproduce.md).
+† SAM2-DEGNet is a binary COD method; this row reports its 5-class head adaptation (trained 15 epochs under a limited compute budget). On the binary sub-problem it is the strongest method (bIoU 0.868); see `docs/reproduce.md`.
+
+**Complexity (GFLOPs = MACs, COD convention):** SFCNet-CPC needs 24.28 GFLOPs / 23.32M params (all trained) — far lighter in compute than SAM2-DEGNet (195.60 GFLOPs, ~3× slower) and FPNet (38.90 GFLOPs / 75.6M). The CPC module adds only +0.7% GFLOPs and zero extra parameters over the SFCNet baseline (24.12 → 24.28).
+
+Full per-class breakdown, ablations, binary COD metrics, cross-dataset (MHCD2022) results, and repeated-run variance are in [`docs/reproduce.md`](docs/reproduce.md). **Dataset construction, sources, annotation, and ethics are documented in [`DATASET.md`](DATASET.md).**
 
 ---
 
@@ -156,6 +161,9 @@ See [`scripts/`](scripts/) for one-command recipes and [`docs/reproduce.md`](doc
 
 - SFCNet backbone: Zhao et al., "Spatial-Frequency Collaborative Learning for Camouflaged Object Detection," *IEEE TMM*, 2025.
 - Baselines: DeepLabV3+, U-Net, PSPNet, FPN, PAN, FPNet, SINet-V2, ZoomNeXt (each in its original release).
+- AI image generation: CamDiff (Camouflage Image Augmentation via Diffusion, *CAAI AIR* 2023), built on the RunwayML Stable Diffusion Inpainting model; public text-to-image services Doubao and Nano-banana-1.
+- Annotation: labelme.
+- Evaluation: py_sod_metrics for the standard COD metrics.
 
 ## 📖 Citation
 
